@@ -32,7 +32,7 @@ def get_distortion_array(m: int = 200, n: int = 200, distortion_amount: int = 3)
     :return: m*n*3 numpy array for distortion on half the image
     """
     half_width = int(n / 2)
-    array_rand = np.random.randint(low=0, high=distortion_amount+1, size=(m, half_width, 3), dtype=np.uint8)
+    array_rand = np.random.randint(low=0, high=distortion_amount + 1, size=(m, half_width, 3), dtype=np.uint8)
     array_zeros = np.zeros((m, half_width, 3), dtype=np.uint8)
     return np.concatenate((array_rand, array_zeros), axis=1)
 
