@@ -1,31 +1,44 @@
 # image-distortion
-
-Rest API to serve a logo with the left half distorted.
+Rest API using Flask, ImageIO and numpy to serve a logo with the left half distorted.
 
 ### Requirements
-- Build a Python app exposing an HTTP endpoint that returns an image (attached)
-- The left half of the image should have random distortion applied to each pixel.
-- The distortion effect should be such that the red, green and blue components of each pixels are between n-3 and n where n is the original integer representation of the pixel’s colour component. 
-- Different distortion should be applied (and therefore slightly different picture served) each time you call the endpoint.
-- Include unit and integration tests as you think is necessary.
-- Limit the above to 2hrs.
+- Build an web application returning an image.
+- Distort the left half of the image by subtracting 0-3 from the RGB values.
+- The distortion should be different each time.
+
+### API
+**Method**|**Pattern**|**Action**
+:-----:|:-----:|:-----:
+GET|/v1/image and /|Return a version of the logo with distortion on the left side
+
+### Local development
+1. Create a virtual environment and install the requirements:
+    ```bash
+    python3 -m venv env
+    . ./env/bin/activate
+    pip install -r requirements.txt
+    ```
+2. Run tests
+    `python3 -m pytest`
+3. Run application
+    `gunicorn main:app`
+4. Build and run Docker image
+    ```
+   docker build -t image-distortion .
+   docker run -it -p 8080:8080 image-distortion:latest
+   ```
 
 
-
-# TODO
-- write tests for image manipulation
-- add github action
-- add api versioning
-- add swagger docs
-
-# TODO with more time
-- API endpoint versioning
-- Swagger documentation
-- Performance testing
+### TODO: with more time
+- Distort different images
+- Distort by amounts according to the request
+- Swagger/OpenAPI documentation for the endpoint
+- Performance profiling
+- Deployment
 - Security testing (e.g. https://github.com/zaproxy/zap-api-python)
 
 
-### Commands run in a CI pipeline
+### Commands run in a Github Action CI pipeline
 
 flake8 style enforcement:
 
@@ -35,6 +48,6 @@ Bandit security linting:
 
 `bandit app.py`
 
-Pytest unit tests with 80% minimum coverage:
+Pytest unit tests:
 
-`python3 -m pytest --cov=src --cov-fail-under=80`
+`python3 -m pytest`
