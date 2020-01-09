@@ -8,17 +8,19 @@
 """
 
 from flask import Flask, send_file
-from app.imaging import read_image, get_distortion_array, distort_image
+from app.imaging import read_image, get_distortion_array, combine_distort_array, convert_distorted_image
 
 # Create the Flask web application
 app = Flask(__name__)
 
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/v1/image', methods=["GET"])
+@app.route('/', methods=["GET"])
 def get_image():
-    image = read_image()
+    image = read_image('./images/logo.png')
     dist = get_distortion_array(distortion_amount=3)
-    out = distort_image(image, dist)
+    dist_img_array = combine_distort_array(image, dist)
+    out = convert_distorted_image(dist_img_array)
     return send_file(out, mimetype='image/png')
 
 
